@@ -1,4 +1,4 @@
-# Phase 2 - 01 - Intro to React
+# <a href="https://01-intro-to-react-slides.netlify.app/" target="_blank">Phase 2 - 01 - Intro to React</a>
 
 ## Goals
 
