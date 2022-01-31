@@ -12,50 +12,72 @@
       - Create a "components" subdirectory + "ToyCard.js" file
 */
 
+import toys from './toys';
+import ToyCard from './ToyCard';
+
+
 function App() {
   return (
     <div>
       <header className="App-header">
-      <div id="toy-header">
-      <img
-        src="https://fontmeme.com/permalink/180719/67429e6afec53d21d64643101c43f029.png"
-        alt="toy-header"
-      />
-    </div>
+        <div id="toy-header">
+          <img
+            src="https://fontmeme.com/permalink/180719/67429e6afec53d21d64643101c43f029.png"
+            alt="toy-header"
+          />
+        </div>
 
-    <div class="container">
-      <form class="add-toy-form">
-        <h3>Create a toy!</h3>
-
-        <input
-          type="text"
-          name="name"
-          value=""
-          placeholder="Enter a toy's name..."
-          class="input-text"
-        />
-        <br />
-        <input
-          type="text"
-          name="image"
-          value=""
-          placeholder="Enter a toy's image URL..."
-          class="input-text"
-        />
-        <br />
-        <input
-          type="submit"
-          name="submit"
-          value="Create Toy"
-          class="submit"
-        />
-      </form>
-    </div>
-    {/* <p style="text-align:center">
-      Andy needs your help! <button id="new-toy-btn">Add a new toy!</button>
-    </p> */}
-    </header>
-    <div id="toy-collection"></div>
+        <div className="container">
+          {/* Form Component */}
+          <form className="add-toy-form">
+            <h3>Create a toy!</h3>
+            {/* Input Components */}
+            <input
+              type="text"
+              name="name"
+              defaultValue=""
+              placeholder="Enter a toy's name..."
+              className="input-text"
+            />
+            <br />
+            <input
+              type="text"
+              name="image"
+              defaultValue=""
+              placeholder="Enter a toy's image URL..."
+              className="input-text"
+            />
+            <br />
+            <input
+              type="submit"
+              name="submit"
+              defaultValue="Create Toy"
+              className="submit"
+            />
+          </form>
+        </div>
+        <p style={{textAlign: "center"}}>
+          Andy needs your help! <button id="new-toy-btn">Add a new toy!</button>
+        </p>
+      </header>
+      {/* ToyCollection Component */}
+      <div id="toy-collection">
+        {/* {toys.map(toy => (
+          <ToyCard
+            name={toy.name}
+            image={toy.image}
+            likes={toy.likes}
+            id={toy.id}
+            key={toy.id}
+          />
+        ))} */}
+        {toys.map(toy => (
+          <ToyCard
+            {...toy}
+            key={toy.id}
+          />
+        ))}
+      </div>
     </div>
   );
 }
