@@ -24,7 +24,7 @@
 ## Deliverables
 
 - [ ] Toggle Dark Mode button text on click
-- [ ] **Breakout Exercise** Add a 'like' button to each project card
+- [ ] **Exercise** Add a 'like' button to each project card
 - [ ] Filter by project name
 
 ## Lecture Notes
@@ -38,12 +38,12 @@ In vanilla JS, our steps for handling events looked likes this:
 3. Give callback to event listener (remove, add, etc.):
    `beef.addEventListener("click", () => {console.log("BEEF!")})`
 
-In React, we don't have to do step 1, we can skip directly to step 2 by adding
-event handlers directly to our JSX. We still must supply the event handler with
-a callback.
+In React, we don't have to do step 1 of finding a piece of DOM, we can skip 
+directly to step 2 by adding event handlers directly to our JSX. We still must 
+supply the event handler with a callback.
 
 For example, if we're trying to implement a click handler on a button, we could
-do so in a Class Component by passing a callback function to the onClick
+do so by passing a callback function to the onClick
 attribute of an element:
 
 ```js
@@ -211,7 +211,7 @@ function Counter() {
 }
 ```
 
-`setState` can take an value OR a function as its first argument. Since
+`setState` can take a value OR a function as its first argument. Since
 [updates to state and props may be asynchronous](https://reactjs.org/docs/hooks-reference.html#functional-updates),
 you should use the function version of `setState` when you intend to use the
 previous state or props values when writing the new state values.
