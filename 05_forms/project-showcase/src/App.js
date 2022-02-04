@@ -23,6 +23,10 @@ function App() {
     setIsDarkMode(isDarkMode => !isDarkMode);
   }
 
+  function handleAddProject(project) {
+    setProjects(projects => [...projects, project])
+  }
+
   const darkModeClass = isDarkMode ? 'App' : 'App light'
 
   return (
@@ -31,7 +35,9 @@ function App() {
         isDarkMode={isDarkMode}
         handleToggleDarkMode={toggleDarkMode}
       />
-      <ProjectForm />
+      <ProjectForm
+        handleAddProject={handleAddProject}
+      />
       <button onClick={() => fetchProjects()}>Fetch Projects</button>
       <ProjectList projects={projects} />
     </div>
