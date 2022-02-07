@@ -25,12 +25,15 @@ function App() {
   // whenever search input text is update, update the debounced term on a timeout
   useEffect(() => {
     // ✅ save the timeoutID to a variable
-    setTimeout(() => {
+    const intervalID = setTimeout(() => {
       setDebouncedSearchTerm(searchInputText);
     }, 300)
 
     // ✅ return a cleanup function that will clean up the previously scheduled timeoutID
     // CODE HERE
+    return function () {
+      clearTimeout(intervalID);
+    }
   }, [searchInputText])
 
   return (
