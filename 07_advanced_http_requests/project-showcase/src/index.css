@@ -69,8 +69,8 @@ button.active,
 button:focus,
 button:hover {
   outline: none;
-  color: var(--white);
-  background-color: var(--primary);
+  /* color: var(--white); */
+  background-color: var(--blue);
   border: 2px solid var(--primary);
 }
 
@@ -235,6 +235,13 @@ select:focus {
 
 .card .extra {
   margin-top: auto;
+}
+
+.card .manage {
+  display: flex;
+  justify-content: end;
+  margin: 0.5rem;
+  gap: 0.25rem;
 }
 
 .badge {

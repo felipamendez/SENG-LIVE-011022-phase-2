@@ -1,35 +1,25 @@
 import React, { useState } from "react";
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-/* 
-use state to implement a "clap" feature
-when the clap button is clicked, 
-update the number of claps for the project
-
-- import the useState hook
-- create your initial state
-- update the JSX to use the state variable to display the number of claps
-- add an event listener to the button for a click event
-- when the button is clicked, update state and increment the number of claps
-
-- BONUS: fix the accessibility issue with the button!
-
-https://reactwithhooks.netlify.app/docs/handling-events.html
-*/
-
-function ProjectItem({
-  id,
-  name,
-  about,
-  phase,
-  link,
-  image
-}) {
+function ProjectItem({ project, enterEditModeFor }) {
+  const {
+    id,
+    name,
+    about,
+    phase,
+    link,
+    image
+  } = project;
   const [claps, setClaps] = useState(0);
 
   function handleClapClick(event) {
     setClaps(claps => claps + 1)
     // why does setClaps(claps++) cause a problem when setClaps(claps + 1) wouldn't?
     // claps++ is equivalent to claps = claps + 1
+  }
+
+  function handleDeleteClick() {
+
   }
 
   return (
@@ -51,6 +41,18 @@ function ProjectItem({
 
       <footer className="extra">
         <span className="badge blue">Phase {phase}</span>
+        <div className="manage">
+          <button
+            onClick={() => enterEditModeFor(project)}
+          >
+            <FaPencilAlt />
+          </button>
+          <button
+            onClick={handleDeleteClick}
+          >
+            <FaTrash />
+          </button>
+        </div>
       </footer>
     </li>
   );

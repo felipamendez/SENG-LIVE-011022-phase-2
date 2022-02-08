@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import ProjectListItem from "./ProjectListItem";
 
-// we need to store the contents of the input tag in state
-// what about the searchResults? Because I can calculate the search results based on the projects in props + the contents of the input in state, I don't need to store them in state.
-function ProjectList(props) {
+function ProjectList({projects, enterEditModeFor}) {
   const [searchText, setSearchText] = useState("")
-  const [sortBy, setSortBy] = useState("none")
-  const searchResults = props.projects.filter((project) => {
+  
+
+  const searchResults = projects.filter((project) => {
     return (
       project.name.toLowerCase().includes(searchText.toLowerCase()) ||
       project.about.toLowerCase().includes(searchText.toLowerCase())
@@ -14,12 +13,16 @@ function ProjectList(props) {
   })
   console.log(searchResults);
 
-  // depending on what sortBy is set to, you can set up sortedSearchResults to be something that matches the choice made in sortBy
-  // map over the array of project objects => return an array of ProjectItem components
-  // [{},{},{},{}] => [<ProjectListItem />, <ProjectListItem />, <ProjectListItem />, <ProjectListItem />]
+
   const projectItems = searchResults.map((project) => {
-    return <ProjectListItem key={project.id} {...project} />;
-  });
+  return (
+    <ProjectListItem 
+      key={project.id} 
+      project={project} 
+      enterEditModeFor={enterEditModeFor}
+    />
+  );
+});
 
   const handleSearch = ({target}) => {
     setSearchText(target.value)

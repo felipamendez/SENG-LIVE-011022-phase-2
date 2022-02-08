@@ -3,13 +3,17 @@ import './App.css';
 import Header from './components/Header';
 import ProjectForm from './components/ProjectForm';
 import ProjectList from './components/ProjectList';
-
-
+import ProjectEditForm from './components/ProjectEditForm';
 
 
 function App() {
   const [projects, setProjects] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(true)
+  const [projectToEdit, setProjectToEdit] = useState(null);
+
+  function completeEditing() {
+    setProjectToEdit(null);
+  }
 
   function fetchProjects() {
     fetch("http://localhost:4000/projects")
@@ -27,7 +31,28 @@ function App() {
     setProjects(projects => [...projects, project])
   }
 
+  function enterEditModeFor(project) {
+    setProjectToEdit(project);
+  }
+
   const darkModeClass = isDarkMode ? 'App' : 'App light'
+
+  function renderForm() {
+    if (projectToEdit) {
+      return (
+        <ProjectEditForm
+          projectToEdit={projectToEdit}
+          completeEditing={completeEditing}
+        />
+      )
+    } else {
+      return (
+        <ProjectForm
+          handleAddProject={handleAddProject}
+        />
+      )
+    }
+  }
 
   return (
     <div className={darkModeClass}>
@@ -35,11 +60,12 @@ function App() {
         isDarkMode={isDarkMode}
         handleToggleDarkMode={toggleDarkMode}
       />
-      <ProjectForm
-        handleAddProject={handleAddProject}
-      />
+      {renderForm()}
       <button onClick={() => fetchProjects()}>Fetch Projects</button>
-      <ProjectList projects={projects} />
+      <ProjectList 
+        projects={projects} 
+        enterEditModeFor={enterEditModeFor}
+      />
     </div>
   );
 }
