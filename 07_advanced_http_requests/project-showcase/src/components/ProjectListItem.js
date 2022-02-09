@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-function ProjectItem({ project, enterEditModeFor }) {
+function ProjectItem({
+  project,
+  enterProjectEditModeFor,
+  handleDeleteProject
+}) {
   const {
     id,
     name,
@@ -19,7 +23,10 @@ function ProjectItem({ project, enterEditModeFor }) {
   }
 
   function handleDeleteClick() {
-
+    fetch(`http://localhost:4000/projects/${id}`, {
+      method: "DELETE"
+    })
+    handleDeleteProject(id)
   }
 
   return (
@@ -43,7 +50,7 @@ function ProjectItem({ project, enterEditModeFor }) {
         <span className="badge blue">Phase {phase}</span>
         <div className="manage">
           <button
-            onClick={() => enterEditModeFor(project)}
+            onClick={() => enterProjectEditModeFor(project)}
           >
             <FaPencilAlt />
           </button>

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import ProjectListItem from "./ProjectListItem";
 
-function ProjectList({projects, enterEditModeFor}) {
+function ProjectList({
+  projects, 
+  enterProjectEditModeFor,
+  handleDeleteProject
+}) {
   const [searchText, setSearchText] = useState("")
   
 
@@ -19,7 +23,8 @@ function ProjectList({projects, enterEditModeFor}) {
     <ProjectListItem 
       key={project.id} 
       project={project} 
-      enterEditModeFor={enterEditModeFor}
+      enterProjectEditModeFor={enterProjectEditModeFor}
+      handleDeleteProject={handleDeleteProject}
     />
   );
 });

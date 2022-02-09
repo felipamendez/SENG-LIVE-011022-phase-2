@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import ProjectForm from './components/ProjectForm';
 import ProjectList from './components/ProjectList';
 import ProjectEditForm from './components/ProjectEditForm';
+import { AiOutlineReload } from 'react-icons/ai'
 
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
   function completeEditing() {
     setProjectToEdit(null);
   }
+
+  useEffect(fetchProjects, [])
 
   function fetchProjects() {
     fetch("http://localhost:4000/projects")
@@ -31,7 +34,24 @@ function App() {
     setProjects(projects => [...projects, project])
   }
 
-  function enterEditModeFor(project) {
+  // add function to handle projects updating
+  function handleUpdateProject(updatedProject) {
+    const updatedProjects = projects.map(originalProject => {
+      if (originalProject.id === updatedProject.id) {
+        return updatedProject;
+      } else {
+        return originalProject;
+      }
+    })
+    setProjects(updatedProjects);
+  }
+
+  function handleDeleteProject(deletedProjectId) {
+    const updatedProjects = projects.filter(project => project.id !== deletedProjectId);
+    setProjects(updatedProjects);
+  }
+
+  function enterProjectEditModeFor(project) {
     setProjectToEdit(project);
   }
 
@@ -43,6 +63,7 @@ function App() {
         <ProjectEditForm
           projectToEdit={projectToEdit}
           completeEditing={completeEditing}
+          handleUpdateProject={handleUpdateProject}
         />
       )
     } else {
@@ -61,10 +82,11 @@ function App() {
         handleToggleDarkMode={toggleDarkMode}
       />
       {renderForm()}
-      <button onClick={() => fetchProjects()}>Fetch Projects</button>
+      <button onClick={() => fetchProjects()}><AiOutlineReload /></button>
       <ProjectList 
         projects={projects} 
-        enterEditModeFor={enterEditModeFor}
+        enterProjectEditModeFor={enterProjectEditModeFor}
+        handleDeleteProject={handleDeleteProject}
       />
     </div>
   );

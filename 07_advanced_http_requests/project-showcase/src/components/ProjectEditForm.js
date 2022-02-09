@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function ProjectEditForm({ projectToEdit, completeEditing }) {
+function ProjectEditForm({ projectToEdit, completeEditing, handleUpdateProject }) {
   const [formState, setFormState] = useState({ ...projectToEdit })
   
   function handleChange(event) {
@@ -11,7 +11,30 @@ function ProjectEditForm({ projectToEdit, completeEditing }) {
   function handleSubmit(event) {
     event.preventDefault();
     // fill me in!
-    completeEditing();
+    // optimistic rendering version
+    // fetch(`http://localhost:4000/projects/${projectToEdit.id}`, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(formState)
+    // })
+    // handleUpdateProject(formState)
+    // completeEditing();
+
+    // pessimistic rendering version
+    fetch(`http://localhost:4000/projects/${projectToEdit.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formState)
+    })
+      .then(res => res.json())
+      .then(updatedProject => {
+        handleUpdateProject(updatedProject)
+        completeEditing();
+      })
   }
 
   const { name, about, phase, link, image } = formState;

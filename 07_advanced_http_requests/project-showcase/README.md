@@ -19,22 +19,22 @@ To allow users to edit projects, some UI changes were necessary:
   - Add conditional logic to check if `projectToEdit` exists:
     - if it does, render `ProjectEditForm`, passing `projectToEdit` and `completeEditing` as props
     - if it doesn't, render `ProjectForm` as before
-  - define a `enterEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
-  - pass the `enterEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
+  - define a `enterProjectEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
+  - pass the `enterProjectEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
 - Within the `ProjectEditForm` component, we need to:
   - set up our `formState` as an object in this case, spread out from `projectToEdit` as an initial value
   - add a `handleChange` event handler that will dynamically (and non-destructively) update the object
   - add a `handleSubmit` event handler that will
 - In `ProjectList` we need to:
-  - accept `enterEditModeFor` as a prop
-  - pass `enterEditModeFor` as a prop to each `ProjectListItem`
+  - accept `enterProjectEditModeFor` as a prop
+  - pass `enterProjectEditModeFor` as a prop to each `ProjectListItem`
   - pass the entire `project` as a prop to `ProjectListItem` instead of spreading out its properties
 - In `ProjectListItem` we need to:
-  - accept `enterEditModeFor` as a prop
+  - accept `enterProjectEditModeFor` as a prop
   - accept `project` as a prop (instead of destructuring its properties within the parameter list)
   - destructure the properties of `project` within the body of the component function (so we can still access them within our JSX)
   - Add a button with an edit icon within the JSX
-  - add an event listener to the edit icon in ProjectListItem that invokes the `enterEditModeFor` callback with the `project` received as a prop as its argument.
+  - add an event listener to the edit icon in ProjectListItem that invokes the `enterProjectEditModeFor` callback with the `project` received as a prop as its argument.
 - In `ProjectForm` we need to 
   - accept `projectToEdit` as a prop
   - refactor component to use a `formState` object in state 
@@ -126,21 +126,21 @@ function renderForm() {
 // with
 {renderForm()}
 ```
-### define a `enterEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
+### define a `enterProjectEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
 
 ```js
-function enterEditModeFor(project) {
+function enterProjectEditModeFor(project) {
   setProjectToEdit(project);
 }
 ```
-#### pass the `enterEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
+#### pass the `enterProjectEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
 
 ```js
 // <ProjectList projects={projects} />
 // will become
 <ProjectList 
   projects={projects} 
-  enterEditModeFor={enterEditModeFor}
+  enterProjectEditModeFor={enterProjectEditModeFor}
 />
 ```
 
@@ -256,13 +256,13 @@ function handleSubmit(event) {
 
 ## In `ProjectList` we need to
 
-### accept `enterEditModeFor` as a prop
+### accept `enterProjectEditModeFor` as a prop
 
 ```js
-function ProjectList({projects, enterEditModeFor}) {
+function ProjectList({projects, enterProjectEditModeFor}) {
 ```
 
-### pass `enterEditModeFor` as a prop to each `ProjectListItem`
+### pass `enterProjectEditModeFor` as a prop to each `ProjectListItem`
 
 ```js
 const projectItems = searchResults.map((project) => {
@@ -270,7 +270,7 @@ const projectItems = searchResults.map((project) => {
     <ProjectListItem 
       key={project.id} 
       {...project} 
-      enterEditModeFor={enterEditModeFor}
+      enterProjectEditModeFor={enterProjectEditModeFor}
     />
   );
 });
@@ -284,14 +284,14 @@ const projectItems = searchResults.map((project) => {
     <ProjectListItem 
       key={project.id} 
       project={project} 
-      enterEditModeFor={enterEditModeFor}
+      enterProjectEditModeFor={enterProjectEditModeFor}
     />
   );
 });
 ```
 ## In `ProjectListItem` we need to:
 
-### accept `enterEditModeFor` and `project` as props
+### accept `enterProjectEditModeFor` and `project` as props
 
 ```jsx
 function ProjectItem({
@@ -307,7 +307,7 @@ function ProjectItem({
 becomes
 
 ```jsx
-function ProjectItem({ project, enterEditModeFor }) {
+function ProjectItem({ project, enterProjectEditModeFor }) {
 ```
 
 ### destructure the properties of `project` within the body of the component function (so we can still access them within our JSX)
@@ -353,11 +353,11 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
   gap: 0.25rem;
 }
 ```
-### add an event listener to the edit icon in ProjectListItem that invokes the `enterEditModeFor` callback with the `project` received as a prop as its argument.
+### add an event listener to the edit icon in ProjectListItem that invokes the `enterProjectEditModeFor` callback with the `project` received as a prop as its argument.
 
 ```js
 <button
-  onClick={() => enterEditModeFor(project)}
+  onClick={() => enterProjectEditModeFor(project)}
 >
   <FaPencilAlt />
 </button>
@@ -386,6 +386,17 @@ function handleDeleteClick() {
 
 ### Where in my component tree is the UI element that the user interacts with to start the process? (where is the element that is the target of the triggering event?)
 
+### What piece of state needs to update as a result of this user behavior? (And where does that piece of state live within the comoponent hierarchy?)
+
+### If the state that needs to be updated is not in the component where the UI element is rendered, then we need to pass a callback from the parent component that has the state to ensure that it can be updated when the event is triggered from the child component
+
+
+## Updating Projects through Form
+
+### For this feature, what is the user behavior (event) that starts the process?
+Submit event on ProjectEditForm
+### Where in my component tree is the UI element that the user interacts with to start the process? (where is the element that is the target of the triggering event?)
+ProjectEditForm has the form where the event will occur
 ### What piece of state needs to update as a result of this user behavior? (And where does that piece of state live within the comoponent hierarchy?)
 
 ### If the state that needs to be updated is not in the component where the UI element is rendered, then we need to pass a callback from the parent component that has the state to ensure that it can be updated when the event is triggered from the child component
