@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 
 function ProjectDetail() {
   const [claps, setClaps] = useState(0);
   const [project, setProject] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const id = 1;
+  const { id } = useParams();
+  console.log(id);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/projects/${id}`)
+    fetch(`http://localhost:4000/projects/${id}`)
       .then((r) => r.json())
       .then((project) => {
         setProject(project);

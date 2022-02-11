@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 function ProjectItem({
   project,
@@ -49,11 +50,12 @@ function ProjectItem({
       <footer className="extra">
         <span className="badge blue">Phase {phase}</span>
         <div className="manage">
-          <button
-            onClick={() => enterProjectEditModeFor(project)}
+          <Link
+            className="button"
+            to={`/projects/${id}/edit`}
           >
             <FaPencilAlt />
-          </button>
+          </Link>
           <button
             onClick={handleDeleteClick}
           >

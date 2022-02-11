@@ -1,7 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
-function ProjectEditForm({ projectToEdit, completeEditing, handleUpdateProject }) {
-  const [formState, setFormState] = useState({ ...projectToEdit })
+function ProjectEditForm({ handleUpdateProject }) {
+  const [formState, setFormState] = useState({})
+  const { id } = useParams();
+  const history = useHistory();
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/projects/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setFormState(data);
+      })
+  }, [id])
   
   function handleChange(event) {
     const { name, value } = event.target;
@@ -10,20 +21,7 @@ function ProjectEditForm({ projectToEdit, completeEditing, handleUpdateProject }
 
   function handleSubmit(event) {
     event.preventDefault();
-    // fill me in!
-    // optimistic rendering version
-    // fetch(`http://localhost:4000/projects/${projectToEdit.id}`, {
-    //   method: 'PATCH',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(formState)
-    // })
-    // handleUpdateProject(formState)
-    // completeEditing();
-
-    // pessimistic rendering version
-    fetch(`http://localhost:4000/projects/${projectToEdit.id}`, {
+    fetch(`http://localhost:4000/projects/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -33,7 +31,7 @@ function ProjectEditForm({ projectToEdit, completeEditing, handleUpdateProject }
       .then(res => res.json())
       .then(updatedProject => {
         handleUpdateProject(updatedProject)
-        completeEditing();
+        history.push(`/projects/${id}`)
       })
   }
 

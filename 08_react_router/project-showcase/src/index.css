@@ -191,6 +191,11 @@ select:focus {
   margin: 0 1rem;
 }
 
+.project-image img {
+  width: 400px;
+  height: auto;
+}
+
 /* cards */
 .cards {
   margin: 0 auto;

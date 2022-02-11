@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { Switch, Route } from 'react-router-dom'
 import Header from './components/Header';
 import Home from './components/Home';
 import ProjectForm from './components/ProjectForm';
@@ -12,11 +13,6 @@ import { AiOutlineReload } from 'react-icons/ai'
 function App() {
   const [projects, setProjects] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(true)
-  const [projectToEdit, setProjectToEdit] = useState(null);
-
-  function completeEditing() {
-    setProjectToEdit(null);
-  }
 
   useEffect(fetchProjects, [])
 
@@ -53,29 +49,7 @@ function App() {
     setProjects(updatedProjects);
   }
 
-  function enterProjectEditModeFor(project) {
-    setProjectToEdit(project);
-  }
-
   const darkModeClass = isDarkMode ? 'App' : 'App light'
-
-  function renderForm() {
-    if (projectToEdit) {
-      return (
-        <ProjectEditForm
-          projectToEdit={projectToEdit}
-          completeEditing={completeEditing}
-          handleUpdateProject={handleUpdateProject}
-        />
-      )
-    } else {
-      return (
-        <ProjectForm
-          handleAddProject={handleAddProject}
-        />
-      )
-    }
-  }
 
   return (
     <div className={darkModeClass}>
@@ -83,15 +57,30 @@ function App() {
         isDarkMode={isDarkMode}
         handleToggleDarkMode={toggleDarkMode}
       />
-      <Home />
-      {renderForm()}
-      <button onClick={() => fetchProjects()}><AiOutlineReload /></button>
-      <ProjectList 
-        projects={projects} 
-        enterProjectEditModeFor={enterProjectEditModeFor}
-        handleDeleteProject={handleDeleteProject}
-      />
-      <ProjectDetail />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route> 
+        <Route path="/projects/new">
+          <ProjectForm
+            handleAddProject={handleAddProject}
+          />
+        </Route> 
+        <Route path="/projects/:id/edit">
+          <ProjectEditForm
+            handleUpdateProject={handleUpdateProject}
+          />
+        </Route> 
+        <Route exact path="/projects/:id">
+          <ProjectDetail />
+        </Route> 
+        <Route path="/projects">
+          <ProjectList 
+            projects={projects} 
+            handleDeleteProject={handleDeleteProject}
+          />
+        </Route> 
+      </Switch>      
     </div>
   );
 }

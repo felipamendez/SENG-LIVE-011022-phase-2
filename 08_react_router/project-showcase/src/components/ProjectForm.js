@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
 
 function ProjectForm({ handleAddProject }) {
+  const history = useHistory();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [phase, setPhase] = useState("");
@@ -67,6 +69,7 @@ function ProjectForm({ handleAddProject }) {
       .then(response => response.json())
       .then(savedProject => {
         handleAddProject(savedProject)
+        history.push(`/projects/${savedProject.id}`)
       })
   }
   
